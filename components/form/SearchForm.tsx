@@ -21,6 +21,7 @@ import { setMyListItem } from "@/lib/actions/mylist.action";
 import { SheetClose, SheetFooter } from "../ui/sheet";
 import { setFriendItem } from "@/lib/actions/friend.action";
 import { uploadItemThumbnail } from "@/lib/actions/image.action";
+import { searchUser } from "@/lib/actions/user.actions";
 
 const formSchema = z.object({
   userId: z.string().nonempty(),
@@ -37,8 +38,8 @@ const SearchForm = ({}: {}) => {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    // const result = await searchUser(values.userId);
-    // setResultUser(result);
+    const result = await searchUser(values.userId);
+    setResultUser(result!);
   }
 
   return (
