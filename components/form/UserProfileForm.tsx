@@ -1,38 +1,50 @@
-"use client"
- 
-import { zodResolver } from "@hookform/resolvers/zod"
+"use client";
+
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import * as z from "zod"
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
+import * as z from "zod";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "../ui/form";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { setUser } from "@/lib/actions/user.actions";
 import { EmailAddress } from "@clerk/nextjs/server";
 import Image from "next/image";
-import { ChangeEvent, useState } from "react"
-import { useRouter } from 'next/navigation'
+import { ChangeEvent, useState } from "react";
+import { useRouter } from "next/navigation";
 import { uploadAvatarImage } from "@/lib/actions/image.action";
+import { addMyList } from "@/lib/actions/mylist.action";
+import { initMyList } from "@/constants";
 
 type props = {
   id: string;
   name: string;
   displayName: string;
-  email: EmailAddress
+  email: EmailAddress;
   avatarUrl: string;
-}
+};
 
 const formSchema = z.object({
-  name: z.string()
-  .min(2, {message: "name must be at least 2 characters.",})
-  .max(30, { message: "Maximum 30 caracters." }),
-  displayName: z.string()
-  .min(2, {message: "name must be at least 2 characters.",})
-  .max(30, { message: "Maximum 30 caracters." }),
+  name: z
+    .string()
+    .min(2, { message: "name must be at least 2 characters." })
+    .max(30, { message: "Maximum 30 caracters." }),
+  displayName: z
+    .string()
+    .min(2, { message: "name must be at least 2 characters." })
+    .max(30, { message: "Maximum 30 caracters." }),
   profile_photo: z.string().url().nonempty(),
-})
+});
 
 const UserProfileForm = ({ userData }: { userData: props }) => {
-  const router = useRouter()
+  const router = useRouter();
   const [files, setFiles] = useState<File[]>([]);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -42,12 +54,32 @@ const UserProfileForm = ({ userData }: { userData: props }) => {
       displayName: userData.displayName,
       profile_photo: userData.avatarUrl,
     },
-  })
+  });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    const url = files[0] ? await uploadAvatarImage(files[0], userData.id) : userData.avatarUrl
-    await setUser({id: userData.id, name: values.name, displayName: values.displayName, email: userData.email.emailAddress, avatarUrl: url, onboarded: true})
-    router.push("/")
+    const myListId = userData.id + Date.now().toString();
+    const url = files[0]
+      ? await uploadAvatarImage(files[0], userData.id)
+      : userData.avatarUrl;
+    await Promise.all([
+      setUser({
+        id: userData.id,
+        name: values.name,
+        displayName: values.displayName,
+        email: userData.email.emailAddress,
+        avatarUrl: url,
+        onboarded: true,
+      }),
+      addMyList(userData.id, {
+        id: myListId,
+        name: initMyList.name,
+        description: initMyList.description,
+        thumbnailUrl: initMyList.thumbnailUrl,
+        createAt: Date.now().toString(),
+        createBy: userData.id,
+      }),
+    ]);
+    router.push("/");
   }
 
   const handleImage = (
@@ -76,36 +108,36 @@ const UserProfileForm = ({ userData }: { userData: props }) => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-      <FormField
+        <FormField
           control={form.control}
-          name='profile_photo'
+          name="profile_photo"
           render={({ field }) => (
-            <FormItem className='flex items-center gap-4'>
+            <FormItem className="flex items-center gap-4">
               <FormLabel>
                 {field.value ? (
                   <Image
                     src={field.value}
-                    alt='profile_icon'
+                    alt="profile_icon"
                     width={96}
                     height={96}
                     priority
-                    className='rounded-full object-contain hover:cursor-pointer'
+                    className="rounded-full object-contain hover:cursor-pointer"
                   />
                 ) : (
                   <Image
                     src={userData.avatarUrl}
-                    alt='profile_icon'
+                    alt="profile_icon"
                     width={24}
                     height={24}
-                    className='object-contain hover:cursor-pointer'
+                    className="object-contain hover:cursor-pointer"
                   />
                 )}
               </FormLabel>
-              <FormControl className='flex-1 text-gray-200 hover:cursor-pointer'>
+              <FormControl className="flex-1 text-gray-200 hover:cursor-pointer">
                 <Input
-                  type='file'
-                  accept='image/*'
-                  placeholder='Add profile photo'
+                  type="file"
+                  accept="image/*"
+                  placeholder="Add profile photo"
                   onChange={(e) => handleImage(e, field.onChange)}
                 />
               </FormControl>
@@ -145,10 +177,12 @@ const UserProfileForm = ({ userData }: { userData: props }) => {
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-full self-center">Submit</Button>
+        <Button type="submit" className="w-full self-center">
+          Submit
+        </Button>
       </form>
     </Form>
-  )
-}
+  );
+};
 
-export default UserProfileForm
+export default UserProfileForm;

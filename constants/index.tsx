@@ -47,8 +47,8 @@ export const initItem: ItemInterface = {
 
 export const initMyList: ItemListInterface = {
   id: "",
-  name: "",
-  description: "",
+  name: "デフォルト",
+  description: "初期設定",
   thumbnailUrl: initThumbnailUrl[Math.floor(Math.random() * initThumbnailUrl.length)],
   createAt: "",
   createBy: "",
