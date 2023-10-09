@@ -19,7 +19,7 @@ export async function uploadAvatarImage(file: File, userId: string): Promise<str
 
 export async function uploadItemThumbnail(file: File, itemId: string): Promise<string> {
   try {
-      const storageRef = ref(storage, `items/${itemId + "." + file.name.split(".").pop()}`)
+      const storageRef = ref(storage, `Items/${itemId + "." + file.name.split(".").pop()}`)
       await uploadBytes(storageRef, file)
       const url = await getDownloadURL(storageRef)
       return url

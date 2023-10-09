@@ -57,7 +57,7 @@ const FriendItemForm = ({
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const itemId = userId + Date.now().toString();
     const url = files[0]
-      ? await uploadItemThumbnail(files[0], itemData.id)
+      ? await uploadItemThumbnail(files[0], itemId)
       : itemData.thumbnailUrl;
     const newItemData: ItemInterface = {
       id: itemId,
