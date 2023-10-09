@@ -6,11 +6,12 @@ import * as z from "zod"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { setUser, uploadAvatarImage } from "@/lib/actions/user.actions";
+import { setUser } from "@/lib/actions/user.actions";
 import { EmailAddress } from "@clerk/nextjs/server";
 import Image from "next/image";
 import { ChangeEvent, useState } from "react"
 import { useRouter } from 'next/navigation'
+import { uploadAvatarImage } from "@/lib/actions/image.action";
 
 type props = {
   id: string;
