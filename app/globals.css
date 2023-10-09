@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -27,6 +26,7 @@
     --radius: 0.5rem;
     --selected: 20.5 90.2% 48.2%;
     --selected-foreground: 60 9.1% 97.8%;
+    --custom_bg: 20 14.3% 4.1%;
   }
  
   .dark {
@@ -51,17 +51,18 @@
     --ring: 20.5 90.2% 48.2%;
     --selected: 20.5 90.2% 48.2%;
     --selected-foreground: 60 9.1% 97.8%;
+    --custom_bg: 20 14.3% 4.1%;
   }
 }
 
 
 @layer components {
   .home_header {
-    @apply flex flex-row justify-between px-4 py-2 max-sm:w-full sm:w-72 items-center border-b
+    @apply fixed z-20 top-0 left-0 flex flex-row justify-between px-4 py-2 max-sm:w-full sm:w-72 items-center border-b bg-custom_bg sm:ml-12
   }
 
   .talk_header {
-    @apply flex flex-row justify-center px-4 py-2 w-full items-center border-b
+    @apply fixed top-0 left-0 flex flex-row justify-center px-4 py-2 w-full items-center border-b bg-custom_bg sm:ml-12
   }
 
   .usercard {
@@ -69,18 +70,19 @@
   }
 
   .bottombar {
-    @apply fixed bottom-0 z-10 w-full px-8 py-3 border-t sm:hidden  }
+    @apply fixed bottom-0 z-10 w-full px-8 py-2 border-t sm:hidden
+  }
 
   .bottombar_container {
     @apply flex items-center justify-between gap-3
   }
 
   .bottombar_items {
-    @apply relative p-4 rounded-xl
+    @apply relative p-2 rounded-xl
   }
 
   .leftbar {
-    @apply sticky left-0 z-10 h-screen border-r max-sm:hidden px-2 py-7
+    @apply sticky top-0 left-0 z-30 h-screen border-r max-sm:hidden px-2 py-7
   }
 
   .letfbar_container {
@@ -92,7 +94,7 @@
   }
 
   .main-container {
-    @apply flex min-h-screen flex-1 flex-col
+    @apply flex min-h-screen flex-1 flex-col pt-10 max-sm:pb-14
   }
 
   .modal {
@@ -101,5 +103,13 @@
   
   .modal_wrapper {
     @apply flex justify-start items-center flex-col absolute h-[95%] w-full bottom-0 bg-white rounded-t-3xl lg:px-40 px-8 pt-14 pb-72 overflow-auto;
+  }
+
+  .create_tobuy_button {
+    @apply fixed z-30 bottom-28 right-20
+  }
+
+  .itemcard_grid {
+    @apply grid max-sm:grid-cols-2 sm:grid-cols-3 gap-y-5
   }
 }

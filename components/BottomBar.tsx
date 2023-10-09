@@ -8,7 +8,7 @@ import React from 'react'
 const BottomBar = () => {
   const pathname = usePathname()
   return (
-    <section className="bottombar">
+    <section className="bottombar bg-custom_bg">
       <div className='bottombar_container'>
         {
           BottombarLinks.map((link) => {

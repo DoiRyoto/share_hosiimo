@@ -19,6 +19,7 @@ module.exports = {
       colors: {
         selected: "hsl(var(--selected))",
         "selected-foreground": "hsl(var(--selected-foreground))",
+        custom_bg: "hsl(var(--custom_bg))"
       },
       keyframes: {
         "accordion-down": {

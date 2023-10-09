@@ -1,6 +1,7 @@
 import { collection, doc, getDoc, getDocs, setDoc } from "firebase/firestore";
 import { db } from "../firebase/client";
-import { UserProfile } from "@/common.types";
+import { ItemInterface, UserProfile } from "@/common.types";
+import { addItem } from "./item.actions";
 
 export async function getFriend(friendId: string) {
   try{
@@ -45,6 +46,17 @@ export async function getFriendList(userId: string) {
     const request = friendIdList!.map(getFriend)
     const friendList = await Promise.all(request)
     return friendList
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export async function setFriendItem(itemData: ItemInterface, userId: string, friendId: string) {
+  try{
+    const userFriendRef = doc(db, `users/${userId}/friends/${friendId}/share/`, itemData.id)
+    const friendUserRef = doc(db, `users/${friendId}/friends/${userId}/share/`, itemData.id)
+    const request = [setDoc(userFriendRef, {id: itemData.id}, {merge: true}), setDoc(friendUserRef, {id: itemData.id}, {merge: true})]
+    await Promise.all(request)
   } catch (error) {
     console.log(error)
   }

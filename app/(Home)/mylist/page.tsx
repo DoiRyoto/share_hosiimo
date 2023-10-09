@@ -2,7 +2,6 @@ import { getUser } from "@/lib/actions/user.actions";
 import { currentUser } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import { getFriendList } from "@/lib/actions/friend.action";
-import FriendList from "@/components/FriendList";
 import MyListCardList from "@/components/MyListCardList";
 import { getMyLists } from "@/lib/actions/mylist.action";
 import HomeHeader from "@/components/Header/HomeHeader";
@@ -24,8 +23,7 @@ export default async function Home() {
     <>
       <HomeHeader userData={userInfo}/>
       <div className="flex flex-col gap-3 mt-2">
-        <MyListCardList myLists={myLists} isShowLabel={true}/>
-        <FriendList friendList={friendList} isShowLabel={true}/>
+        <MyListCardList myLists={myLists} isShowLabel={false}/>
       </div>
     </>
   )

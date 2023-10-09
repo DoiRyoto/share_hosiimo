@@ -2,12 +2,10 @@ import '../globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { ClerkProvider, currentUser } from '@clerk/nextjs'
-import BottomBar from '@/components/BottomBar'
 import { ThemeProvider } from '@/components/theme-provider'
 import LeftBar from '@/components/LeftBar'
-import HomeHeader from '@/components/Header/HomeHeader'
-import { getUser } from '@/lib/actions/user.actions'
-import { redirect } from 'next/navigation'
+import BottomBar from '@/components/BottomBar'
+import { ScrollArea } from '@/components/ui/scroll-area'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -21,12 +19,6 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const user = await currentUser()
-  if(!user) return null
-
-  const userInfo = await getUser(user.id);
-  if(!userInfo?.onboarded) redirect("/onboarding")
-
   return (
     <ClerkProvider>
       <html lang="en">
@@ -40,11 +32,10 @@ export default async function RootLayout({
             <main className='flex flex-row'>
             <LeftBar />
             <section className='main-container'>
-              <HomeHeader userData={userInfo}/>
               <div>{children}</div>
             </section>
             </ main>
-            <BottomBar />
+          <BottomBar />
           </ThemeProvider>
         </body>
       </html>

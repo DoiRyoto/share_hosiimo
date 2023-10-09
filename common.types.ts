@@ -18,9 +18,18 @@ export interface ItemInterface {
   name: string;
   description: string;
   thumbnailUrl: string;
-  createAt: Date;
+  createAt: string;
   createBy: string;
   alreadyBuy: boolean;
+}
+
+export interface ItemListInterface {
+  id: string;
+  name: string;
+  description: string;
+  thumbnailUrl: string;
+  createAt: string;
+  createBy: string;
 }
 
 export interface GroupInterface {
@@ -28,7 +37,7 @@ export interface GroupInterface {
   name: string;
   description: string;
   thumbnailUrl: string;
-  createdAt: Date;
+  createdAt: string;
   createdBy: string;
 }
 

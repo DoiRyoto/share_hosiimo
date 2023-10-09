@@ -24,8 +24,7 @@ export default async function Home() {
     <>
       <HomeHeader userData={userInfo}/>
       <div className="flex flex-col gap-3 mt-2">
-        <MyListCardList myLists={myLists} isShowLabel={true}/>
-        <FriendList friendList={friendList} isShowLabel={true}/>
+        <FriendList friendList={friendList} isShowLabel={false}/>
       </div>
     </>
   )
