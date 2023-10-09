@@ -1,4 +1,5 @@
 import FriendHeader from "@/components/Header/FriendHeader";
+import ItemCardGrid from "@/components/ItemCardGrid";
 import FriendItemForm from "@/components/form/FriendItemFrom";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -10,7 +11,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { initItem } from "@/constants";
-import { getFriend } from "@/lib/actions/friend.action";
+import { getFriend, getFriendItems } from "@/lib/actions/friend.action";
 import { getUser } from "@/lib/actions/user.actions";
 import { currentUser } from "@clerk/nextjs";
 import { PlusIcon } from "lucide-react";
@@ -27,9 +28,14 @@ const page = async ({ params }: { params: { friendId: string } }) => {
   const friendInfo = await getFriend(params.friendId);
   if (!friendInfo) redirect("/");
 
+  const friendItems = await getFriendItems({userId: userInfo.id, friendId: params.friendId})
+
   return (
-    <div className="h-screen">
+    <div>
       <FriendHeader userData={friendInfo} />
+      <ScrollArea className='w-full h-full mt-1 -z-10'>
+        <ItemCardGrid itemCardList={friendItems!} />
+      </ScrollArea>
       <div className="h-1/2">
         <Sheet>
           <SheetTrigger asChild>

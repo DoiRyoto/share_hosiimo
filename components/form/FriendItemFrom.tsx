@@ -102,20 +102,7 @@ const FriendItemForm = ({
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <div className="flex flex-col gap-2">
-          <FormField
-            control={form.control}
-            name="name"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>name</FormLabel>
-                <FormControl>
-                  <Input placeholder={itemData.name} {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
+        <FormField
           control={form.control}
           name='profile_photo'
           render={({ field }) => (
@@ -153,6 +140,20 @@ const FriendItemForm = ({
             </FormItem>
           )}
         />
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>name</FormLabel>
+                <FormControl>
+                  <Input placeholder={itemData.name} {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          
           <FormField
             control={form.control}
             name="description"
