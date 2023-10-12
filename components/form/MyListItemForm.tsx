@@ -104,14 +104,14 @@ const MyListItemForm = ({
               name="profile_photo"
               render={({ field }) => (
                 <FormItem className="flex flex-center gap-4">
-                  <FormLabel>
+                  <FormLabel className="flex justify-center hover:cursor-pointer w-full">
                     {field.value ? (
                       <Image
                         src={field.value}
                         alt="icon"
                         width={200}
                         height={200}
-                        style={{ width: "100%", height: "100%" }}
+                        style={{ width: "50%", height: "100%" }}
                         className={cn(
                           "object-cover transition-all aspect-square"
                         )}
