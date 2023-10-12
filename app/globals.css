@@ -58,15 +58,15 @@
 
 @layer components {
   .home_header {
-    @apply fixed z-20 top-0 left-0 flex flex-row justify-between px-4 py-2 max-sm:w-full sm:w-72 items-center border-b bg-custom_bg sm:ml-12
+    @apply fixed z-20 top-0 left-0 flex flex-row justify-between px-4 py-2 max-sm:w-full sm:w-72 h-12 items-center border-b bg-custom_bg sm:ml-12
   }
 
   .talk_header {
-    @apply fixed top-0 left-0 flex flex-row justify-center px-4 py-2 w-full items-center border-b bg-custom_bg sm:ml-12
+    @apply fixed top-0 left-0 z-20 flex flex-row justify-center px-4 py-2 w-full items-center border-b bg-custom_bg sm:ml-12
   }
 
   .usercard {
-    @apply flex flex-row justify-start px-4 py-2 w-full items-center
+    @apply flex flex-row justify-between px-4 py-2 w-full items-center
   }
 
   .bottombar {
@@ -94,15 +94,7 @@
   }
 
   .main-container {
-    @apply flex min-h-screen flex-1 flex-col pt-10 max-sm:pb-14
-  }
-
-  .modal {
-    @apply fixed z-10 left-0 right-0 top-0 bottom-0 mx-auto bg-black/80;
-  }
-  
-  .modal_wrapper {
-    @apply flex justify-start items-center flex-col absolute h-[95%] w-full bottom-0 bg-white rounded-t-3xl lg:px-40 px-8 pt-14 pb-72 overflow-auto;
+    @apply flex min-h-screen flex-1 flex-col max-sm:pb-14
   }
 
   .create_tobuy_button {

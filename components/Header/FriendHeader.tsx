@@ -8,7 +8,7 @@ const FriendHeader = ({ userData }: { userData: UserProfile }) => {
       <BackButton backTo='/community/friend'/>
       <div className="flex flex-row gap-5">
         <text className="text-sm self-center">
-          {userData.name}
+          {userData.displayName}
         </text>
       </div>
     </section>

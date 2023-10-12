@@ -1,11 +1,10 @@
-import "../globals.css";
+import "../../globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { ClerkProvider, currentUser } from "@clerk/nextjs";
 import { ThemeProvider } from "@/components/theme-provider";
 import LeftBar from "@/components/LeftBar";
 import BottomBar from "@/components/BottomBar";
-import { ScrollArea } from "@/components/ui/scroll-area";
 
 const inter = Inter({ subsets: ["latin"] });
 

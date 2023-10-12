@@ -13,21 +13,18 @@ import {
 } from "../ui/form";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import Image from "next/image";
-import { ChangeEvent, useEffect, useState } from "react";
-import { ItemInterface, UserProfile } from "@/common.types";
-import { addItem } from "@/lib/actions/item.actions";
-import { setMyListItem } from "@/lib/actions/mylist.action";
+import { useState } from "react";
+import {  UserProfile } from "@/common.types";
 import { SheetClose, SheetFooter } from "../ui/sheet";
-import { setFriendItem } from "@/lib/actions/friend.action";
-import { uploadItemThumbnail } from "@/lib/actions/image.action";
 import { searchUser } from "@/lib/actions/user.actions";
+import UserList from "../UserList";
+import SearchUserList from "../SearchUserList";
 
 const formSchema = z.object({
   userId: z.string().nonempty(),
 });
 
-const SearchForm = ({}: {}) => {
+const SearchForm = ({ userId }: { userId: string }) => {
   const [resultUser, setResultUser] = useState<UserProfile[] | null>(null);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -43,7 +40,7 @@ const SearchForm = ({}: {}) => {
   }
 
   return (
-    <div>
+    <div className="min-h-[80vh] max-h-[80vh]">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <FormField
@@ -51,7 +48,7 @@ const SearchForm = ({}: {}) => {
             name="userId"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>description</FormLabel>
+                <FormLabel>UserId</FormLabel>
                 <FormControl>
                   <Input placeholder={""} {...field} />
                 </FormControl>
@@ -60,17 +57,13 @@ const SearchForm = ({}: {}) => {
             )}
           />
           <SheetFooter>
-            <SheetClose asChild>
               <Button type="submit" className="w-full self-center mt-5">
                 Search
               </Button>
-            </SheetClose>
           </SheetFooter>
         </form>
       </Form>
-      <text>
-        Result
-      </text>
+      {resultUser && <SearchUserList userId={userId} userList={resultUser} label="result"/>}
     </div>
   );
 };

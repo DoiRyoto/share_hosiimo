@@ -1,4 +1,4 @@
-import { collection, doc, getDoc, getDocs, setDoc } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDoc, getDocs, setDoc } from "firebase/firestore";
 import { db } from "../firebase/client";
 import { ItemInterface, UserProfile } from "@/common.types";
 import { addItem, getItem } from "./item.actions";
@@ -92,6 +92,28 @@ export async function getFriendItems(props: Props) {
     const request = friendItemIdList!.map(getItem)
     const friendItems = await Promise.all(request)
     return friendItems
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export async function addFriend(userId: string, friendId: string) {
+  try{
+    const userFriendRef = doc(db, `users/${userId}/friends/${friendId}`)
+    const friendUserRef = doc(db, `users/${friendId}/friends/${userId}`)
+    const request = [setDoc(userFriendRef, {id: friendId}, {merge: true}), setDoc(friendUserRef, {id: userId}, {merge: true})]
+    await Promise.all(request)
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export async function deleteFriendItem(itemId: string, userId: string, friendId: string) {
+  try{
+    const userFriendRef = doc(db, `users/${userId}/friends/${friendId}/share/`, itemId)
+    const friendUserRef = doc(db, `users/${friendId}/friends/${userId}/share/`, itemId)
+    const request = [deleteDoc(userFriendRef), deleteDoc(friendUserRef)]
+    await Promise.all(request)
   } catch (error) {
     console.log(error)
   }

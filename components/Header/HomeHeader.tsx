@@ -1,9 +1,8 @@
 import { UserProfile } from '@/common.types'
 import React from 'react'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
-import { UserPlus } from 'lucide-react'
 import { Skeleton } from '../ui/skeleton'
-import BackButton from '../BackButtom'
+import UserPlusButton from '../UserPlusButton'
 
 const HomeHeader = ({ userData }: { userData: UserProfile }) => {
   return (
@@ -19,7 +18,7 @@ const HomeHeader = ({ userData }: { userData: UserProfile }) => {
           {userData.displayName}
         </text>
       </div>
-      <UserPlus className='w-5 h-5' />
+      <UserPlusButton userId={userData.id}/>
     </section>
   )
 }

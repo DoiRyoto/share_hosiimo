@@ -1,4 +1,4 @@
-import { addDoc, collection, doc, getDoc, setDoc } from "firebase/firestore"
+import { addDoc, collection, deleteDoc, doc, getDoc, setDoc } from "firebase/firestore"
 import { db } from "../firebase/client"
 import { ItemInterface } from "@/common.types"
 
@@ -23,9 +23,17 @@ export async function getItem({ userId, itemId }: ItemProps) {
 
 export async function addItem(userId: string, itemData: ItemInterface) {
   try{
-    console.log(itemData)
     const itemRef = doc(db, `users/${userId}/items`, itemData.id)
     await setDoc(itemRef, itemData, {merge: true})
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export async function deleteItem(userId: string, itemId: string) {
+  try{
+    const itemRef = doc(db, `users/${userId}/items`, itemId)
+    await deleteDoc(itemRef)
   } catch (error) {
     console.log(error)
   }

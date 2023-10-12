@@ -1,7 +1,7 @@
 import { ItemListInterface } from '@/common.types'
 import React from 'react'
-import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
-import { Skeleton } from './ui/skeleton'
+import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
+import { Skeleton } from '../ui/skeleton'
 import Link from 'next/link'
 
 const MyListCard = ({ myListData }: { myListData: ItemListInterface }) => {

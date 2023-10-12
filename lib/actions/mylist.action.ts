@@ -1,4 +1,4 @@
-import { collection, doc, getDoc, getDocs, setDoc } from "firebase/firestore"
+import { collection, deleteDoc, doc, getDoc, getDocs, setDoc } from "firebase/firestore"
 import { db } from "../firebase/client"
 import { ItemListInterface } from "@/common.types"
 import { getItem } from "./item.actions";
@@ -90,6 +90,15 @@ export async function setMyListItem(userId: string, myListId: string, itemId: st
   try{
     const myListItemRef = doc(db, `users/${userId}/mylists/${myListId}/list_items`, itemId)
     await setDoc(myListItemRef, {id: itemId}, {merge: true})
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export async function deleteMyListItem(userId: string, myListId: string, itemId: string) {
+  try{
+    const myListItemRef = doc(db, `users/${userId}/mylists/${myListId}/list_items`, itemId)
+    await deleteDoc(myListItemRef)
   } catch (error) {
     console.log(error)
   }
