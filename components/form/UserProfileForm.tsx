@@ -17,7 +17,7 @@ import { Button } from "../ui/button";
 import { setUser } from "@/lib/actions/user.actions";
 import { EmailAddress } from "@clerk/nextjs/server";
 import Image from "next/image";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { uploadAvatarImage } from "@/lib/actions/image.action";
 import { addMyList } from "@/lib/actions/mylist.action";
@@ -46,6 +46,7 @@ const formSchema = z.object({
 const UserProfileForm = ({ userData }: { userData: props }) => {
   const router = useRouter();
   const [files, setFiles] = useState<File[]>([]);
+  const isLoading = useRef(false)
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -57,6 +58,7 @@ const UserProfileForm = ({ userData }: { userData: props }) => {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    isLoading.current = true
     const myListId = userData.id + Date.now().toString();
     const url = files[0]
       ? await uploadAvatarImage(files[0], userData.id)
@@ -79,6 +81,7 @@ const UserProfileForm = ({ userData }: { userData: props }) => {
         createBy: userData.id,
       }),
     ]);
+    isLoading.current = false
     router.push("/");
   }
 
@@ -177,7 +180,7 @@ const UserProfileForm = ({ userData }: { userData: props }) => {
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-full self-center">
+        <Button type="submit" className="w-full self-center" disabled={isLoading.current}>
           Submit
         </Button>
       </form>

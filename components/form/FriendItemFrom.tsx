@@ -14,7 +14,7 @@ import {
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import Image from "next/image";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useRef, useState } from "react";
 import { ItemInterface } from "@/common.types";
 import { addItem } from "@/lib/actions/item.actions";
 import { setMyListItem } from "@/lib/actions/mylist.action";
@@ -25,12 +25,11 @@ import { cn } from "@/lib/utils";
 
 const formSchema = z.object({
   name: z
-    .string()
+    .string().nonempty()
     .min(1, { message: "name must be at least 1 characters." })
     .max(30, { message: "Maximum 30 caracters." }),
   description: z
     .string()
-    .min(2, { message: "description must be at least 2 characters." })
     .max(1000, { message: "Maximum 1000 caracters." }),
   profile_photo: z.string().url(),
 });
@@ -45,6 +44,7 @@ const FriendItemForm = ({
   friendId: string;
 }) => {
   const [files, setFiles] = useState<File[]>([]);
+  const isLoading = useRef(false)
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -56,6 +56,7 @@ const FriendItemForm = ({
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    isLoading.current = true
     const itemId = userId + Date.now().toString();
     const url = files[0]
       ? await uploadItemThumbnail(files[0], itemId)
@@ -69,11 +70,13 @@ const FriendItemForm = ({
       createBy: userId,
       alreadyBuy: false,
     };
+
     await Promise.all([
       addItem(userId, newItemData),
       addItem(friendId, newItemData),
       setFriendItem(newItemData, userId, friendId),
     ]);
+    isLoading.current = false
   }
 
   const handleImage = (
@@ -171,13 +174,9 @@ const FriendItemForm = ({
                 </FormItem>
               )}
             />
-            <SheetFooter>
-              <SheetClose asChild>
-                <Button type="submit" className="w-full self-center mt-5">
-                  Submit
-                </Button>
-              </SheetClose>
-            </SheetFooter>
+              <Button type="submit" className="w-full self-center mt-5" disabled={isLoading.current}>
+                Submit
+              </Button>
           </div>
         </form>
       </Form>

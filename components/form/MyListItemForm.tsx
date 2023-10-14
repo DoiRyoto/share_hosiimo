@@ -13,7 +13,7 @@ import {
 } from "../ui/form";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useRef, useState } from "react";
 import { ItemInterface } from "@/common.types";
 import { addItem } from "@/lib/actions/item.actions";
 import { setMyListItem } from "@/lib/actions/mylist.action";
@@ -44,6 +44,7 @@ const MyListItemForm = ({
   myListId: string;
 }) => {
   const [files, setFiles] = useState<File[]>([]);
+  const isLoading = useRef(false)
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -55,6 +56,7 @@ const MyListItemForm = ({
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    isLoading.current = true
     const itemId = userId + Date.now().toString();
     const url = files[0]
       ? await uploadItemThumbnail(files[0], itemId)
@@ -69,6 +71,7 @@ const MyListItemForm = ({
       alreadyBuy: false,
     });
     await setMyListItem(userId, myListId, itemId);
+    isLoading.current = false
   }
 
   const handleImage = (
@@ -165,13 +168,9 @@ const MyListItemForm = ({
                 </FormItem>
               )}
             />
-            <SheetFooter>
-              <SheetClose asChild>
-                <Button type="submit" className="w-full self-center mt-5">
+                <Button type="submit" className="w-full self-center mt-5" disabled={isLoading.current}>
                   Submit
                 </Button>
-              </SheetClose>
-            </SheetFooter>
           </div>
         </form>
       </Form>
